@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -29,6 +30,7 @@ class _DartGameState extends State<DartGame> {
       list.add(
         Container(
           child: TextButton(child: Text(i.toString()), onPressed: () => _scorePoints(i),),
+          color: Colors.amberAccent,
           //padding: EdgeInsets.all(10.0),
         ),
       );
@@ -37,29 +39,44 @@ class _DartGameState extends State<DartGame> {
   }
 
   void _scorePoints(int points) {
-
+    print(points.toString() + " was pressed");
   }
 
   Column _buildGrid() {
     return Column(
-      children: [
+      crossAxisAlignment: CrossAxisAlignment.stretch,
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _genButtons().getRange(0, 5).toList(),
+      children: [
+        Container(
+          padding: EdgeInsets.all(10.0),
+          color: Colors.amber,
+          child: Text("Test"),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _genButtons().getRange(5, 10).toList(),
+        Container(
+          padding: EdgeInsets.all(10.0),
+          color:Colors.blue,
+          child: Column(
+
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _genButtons().getRange(0, 5).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _genButtons().getRange(5, 10).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _genButtons().getRange(10, 15).toList(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _genButtons().getRange(15, 20).toList(),
+              ),
+            ],
+          ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _genButtons().getRange(10, 15).toList(),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _genButtons().getRange(15, 20).toList(),
-        )
       ],
     );
   }
