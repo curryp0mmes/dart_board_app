@@ -1,23 +1,21 @@
+import 'package:dart_board_app/other_classes/dart_game.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScoreCard extends StatefulWidget {
   List<int> numbers = List.empty(growable: true);
-  PlayerScoreCard.numbers(List<int> numbers) {
-    this.numbers = numbers;
-  }
+  DartGamePlayer dartGameData;
+  PlayerScoreCard.numbers(this.numbers, this.dartGameData);
   @override
-  _PlayerScoreCardState createState() => _PlayerScoreCardState(numbers);
+  _PlayerScoreCardState createState() => _PlayerScoreCardState(numbers, dartGameData);
 }
 
 class _PlayerScoreCardState extends State<PlayerScoreCard> {
   List<int> numbers = List.empty(growable: true);
 
-  //DartsPlayerScore player1 = DartsPlayerScore();
+  DartGamePlayer dartGameData;
 
 
-  _PlayerScoreCardState(List<int> numbers) {
-    this.numbers = numbers;
-  }
+  _PlayerScoreCardState(this.numbers, this.dartGameData);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
             Row(
               children: [
                 Text(
-                  "501",
+                  dartGameData.score.toString(),
                   style: TextStyle(fontSize: 50.0),
                 ),
                 Column(

@@ -1,3 +1,4 @@
+import 'package:dart_board_app/other_classes/dart_game.dart';
 import 'package:dart_board_app/widgets/player_score_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class DartGame extends StatefulWidget {
 class _DartGameState extends State<DartGame> {
   List<int> numbers = [1];
 
+  DartGameData dartGameData = DartGameData(1);
 
   List<Widget> _genButtons() {
     List<Container> list = List.empty(growable: true);
@@ -90,7 +92,7 @@ class _DartGameState extends State<DartGame> {
         Expanded(
           child: Row(
             children: [
-              PlayerScoreCard.numbers(numbers),
+              PlayerScoreCard.numbers(numbers,dartGameData.getPlayerScore(0)),
               Container(
                 padding: EdgeInsets.all(10.0),
                 child: Text(

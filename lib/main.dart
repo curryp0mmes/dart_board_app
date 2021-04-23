@@ -14,6 +14,11 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         accentColor: Colors.white,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.system,
       home: DartGame(),
     );
   }
