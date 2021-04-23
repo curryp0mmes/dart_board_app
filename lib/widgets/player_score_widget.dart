@@ -2,20 +2,17 @@ import 'package:dart_board_app/other_classes/dart_game.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScoreCard extends StatefulWidget {
-  List<int> numbers = List.empty(growable: true);
   DartGamePlayer dartGameData;
-  PlayerScoreCard.numbers(this.numbers, this.dartGameData);
+  PlayerScoreCard(this.dartGameData);
   @override
-  _PlayerScoreCardState createState() => _PlayerScoreCardState(numbers, dartGameData);
+  _PlayerScoreCardState createState() => _PlayerScoreCardState(dartGameData);
 }
 
 class _PlayerScoreCardState extends State<PlayerScoreCard> {
-  List<int> numbers = List.empty(growable: true);
 
-  DartGamePlayer dartGameData;
+  DartGamePlayer dartGameDataPlayer;
 
-
-  _PlayerScoreCardState(this.numbers, this.dartGameData);
+  _PlayerScoreCardState(this.dartGameDataPlayer);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
             Row(
               children: [
                 Text(
-                  dartGameData.score.toString(),
+                  dartGameDataPlayer.score.toString(),
                   style: TextStyle(fontSize: 50.0),
                 ),
                 Column(
@@ -56,7 +53,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
                       Text("1",
                           style: TextStyle(
                               color: Colors.grey, letterSpacing: 2.0)),
-                      Text(numbers.length >= 1 ? numbers[0].toString() : "0",
+                      Text(dartGameDataPlayer.threeDarts[0].toString(),
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.bold)),
                       Text("X"),
@@ -70,7 +67,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
                       Text("2",
                           style: TextStyle(
                               color: Colors.grey, letterSpacing: 2.0)),
-                      Text("0",
+                      Text(dartGameDataPlayer.threeDarts[1].toString(),
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.bold)),
                       Text("X"),
@@ -84,7 +81,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
                       Text("3",
                           style: TextStyle(
                               color: Colors.grey, letterSpacing: 2.0)),
-                      Text("0",
+                      Text(dartGameDataPlayer.threeDarts[2].toString(),
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.bold)),
                       Text("X"),
@@ -96,7 +93,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
                   child: Column(
                     children: [
                       Text("Total", style: TextStyle(color: Colors.grey)),
-                      Text("123",
+                      Text(dartGameDataPlayer.lastCombo.toString(),
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.bold)),
                       Text("AVG:100,0"),

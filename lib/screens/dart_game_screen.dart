@@ -8,9 +8,7 @@ class DartGame extends StatefulWidget {
 }
 
 class _DartGameState extends State<DartGame> {
-  List<int> numbers = [1];
-
-  DartGameData dartGameData = DartGameData(1);
+  DartGameData dartGameData = DartGameData(2);
 
   List<Widget> _genButtons() {
     List<Container> list = List.empty(growable: true);
@@ -40,16 +38,27 @@ class _DartGameState extends State<DartGame> {
   }
 
   void _scorePoints(int points) {
+    if (points == 25 && singleDoubleTripleState == 2) return;
     setState(() {
-      numbers.add(points);
+      dartGameData.scorePoints(points, singleDoubleTripleState + 1);
+      singleDoubleTripleState = 0;
     });
   }
-  int singleDoubleTripleState = 0;
-  void _setSingleDoubleTriple(int mode) { //
+
+  void _scoreTriplePoints(int points) {
     setState(() {
-      if (mode == singleDoubleTripleState) singleDoubleTripleState = 0;
-      else if(mode >= 0 && mode <= 2)
-      singleDoubleTripleState = mode;
+      dartGameData.scorePoints(points, 3);
+      singleDoubleTripleState = 0;
+    });
+  }
+
+  int singleDoubleTripleState = 0;
+  void _setSingleDoubleTriple(int mode) {
+    //
+    setState(() {
+      if (mode == singleDoubleTripleState)
+        singleDoubleTripleState = 0;
+      else if (mode >= 0 && mode <= 2) singleDoubleTripleState = mode;
     });
   }
 
@@ -62,8 +71,7 @@ class _DartGameState extends State<DartGame> {
     ),
     side: BorderSide(color: Colors.red),
     shape: const RoundedRectangleBorder(
-    borderRadius:
-    BorderRadius.all(Radius.circular(10))),
+        borderRadius: BorderRadius.all(Radius.circular(10))),
   );
   ButtonStyle _enabledSingleDoubleTriple = OutlinedButton.styleFrom(
     backgroundColor: Colors.red,
@@ -75,33 +83,26 @@ class _DartGameState extends State<DartGame> {
     ),
     side: BorderSide(color: Colors.white),
     shape: const RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius.all(Radius.circular(10))),
+        borderRadius: BorderRadius.all(Radius.circular(10))),
   );
 
   void _undoLastDart() {
     setState(() {
-      if (numbers.length > 0) numbers.removeLast();
+      dartGameData.undo();
     });
   }
 
-  Column _buildGrid() {
+  Column _buildGrid(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: Row(
-            children: [
-              PlayerScoreCard.numbers(numbers,dartGameData.getPlayerScore(0)),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                    (numbers.length != 0 ? numbers.last.toString() : "0") +
-                        " length: " +
-                        numbers.length.toString()),
-              ),
-            ],
-          ),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 2,
+              itemBuilder: (context, int index) {
+                return new PlayerScoreCard(dartGameData.getPlayerScore(index));
+              }),
         ),
         Expanded(
           flex: 3,
@@ -122,7 +123,9 @@ class _DartGameState extends State<DartGame> {
                             child: OutlinedButton(
                               child: Text("Single"),
                               onPressed: () => _setSingleDoubleTriple(0),
-                              style: singleDoubleTripleState == 0 ? _enabledSingleDoubleTriple : _disabledSingleDoubleTriple,
+                              style: singleDoubleTripleState == 0
+                                  ? _enabledSingleDoubleTriple
+                                  : _disabledSingleDoubleTriple,
                             ),
                           ),
                         ),
@@ -135,7 +138,9 @@ class _DartGameState extends State<DartGame> {
                             child: OutlinedButton(
                               child: Text("Double"),
                               onPressed: () => _setSingleDoubleTriple(1),
-                              style: singleDoubleTripleState == 1 ? _enabledSingleDoubleTriple : _disabledSingleDoubleTriple,
+                              style: singleDoubleTripleState == 1
+                                  ? _enabledSingleDoubleTriple
+                                  : _disabledSingleDoubleTriple,
                             ),
                           ),
                         ),
@@ -148,7 +153,9 @@ class _DartGameState extends State<DartGame> {
                             child: OutlinedButton(
                               child: Text("Triple"),
                               onPressed: () => _setSingleDoubleTriple(2),
-                              style: singleDoubleTripleState == 2 ? _enabledSingleDoubleTriple : _disabledSingleDoubleTriple,
+                              style: singleDoubleTripleState == 2
+                                  ? _enabledSingleDoubleTriple
+                                  : _disabledSingleDoubleTriple,
                             ),
                           ),
                         ),
@@ -184,7 +191,106 @@ class _DartGameState extends State<DartGame> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-
+                      Container(
+                        height: 80,
+                        child: OutlinedButton(
+                          child: Text("UNDO"),
+                          onPressed: () => _undoLastDart(),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        child: OutlinedButton(
+                          child: Text("T19"),
+                          onPressed: () => _scoreTriplePoints(19),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        child: OutlinedButton(
+                          child: Text("T20"),
+                          onPressed: () => _scoreTriplePoints(20),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        child: OutlinedButton(
+                          child: Text("BULL"),
+                          onPressed: () => _scorePoints(25),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        child: OutlinedButton(
+                          child: Text("0"),
+                          onPressed: () => _scorePoints(0),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColor),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -218,7 +324,7 @@ class _DartGameState extends State<DartGame> {
           IconButton(icon: Icon(Icons.bar_chart), onPressed: () {}),
         ],
       ),
-      body: _buildGrid(),
+      body: _buildGrid(context),
     );
   }
 }
