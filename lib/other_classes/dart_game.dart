@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class DartGameData {
   int players = 1;
   DartGameData(this.players);
@@ -24,10 +26,19 @@ class DartGameData {
 
 
     history.add(scored);
+    playerData[_currentPlayer].history.add(scored);
     playerData[_currentPlayer].threeDarts[_currentDart] = scored;
     playerData[_currentPlayer].score -= scored;
 
+    if(playerData[_currentPlayer].score == 0 && multiplier == 2) {
+      //done with leg
+    }
+    else if(playerData[_currentPlayer].score <= 1) {
+       playerData[_currentPlayer].snackBar = SnackBar(content: Text('You scored too much'));
 
+    }
+
+    playerData[_currentPlayer].updateAverage();
 
 
     _currentDart++;
@@ -54,7 +65,7 @@ class DartGameData {
 
     playerData[_currentPlayer].threeDarts[_currentDart] = 0;
     playerData[_currentPlayer].score += history.removeLast();
-
+    playerData[_currentPlayer].history.removeLast();
   }
 }
 class DartGamePlayer {
@@ -62,8 +73,27 @@ class DartGamePlayer {
   int lastCombo = 0;
   List<int> threeDarts = [0,0,0];
   bool turn = false;
+  List<int> history = List<int>.empty(growable: true);
+  dynamic average = 0;
+  String averageString = "0";
+  SnackBar snackBar;
 
   void updateCombo() {
     lastCombo = threeDarts[0]+threeDarts[1]+threeDarts[2];
+  }
+  void updateAverage() {
+    if(history.length <= 0) average = 0;
+    else {
+      int sum = 0;
+      for(int scorePiece in history) {
+        sum += scorePiece;
+      }
+      average = (sum / history.length * 3).toDouble();
+      if(average.round().toDouble() == average) averageString = average.toStringAsFixed(0);
+      else if(average >= 100) averageString = average.toStringAsFixed(1);
+      else averageString = average.toStringAsFixed(2);
+
+
+    }
   }
 }

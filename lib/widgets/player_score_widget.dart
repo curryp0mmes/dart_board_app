@@ -96,7 +96,7 @@ class _PlayerScoreCardState extends State<PlayerScoreCard> {
                       Text(dartGameDataPlayer.lastCombo.toString(),
                           style: TextStyle(
                               fontSize: 30.0, fontWeight: FontWeight.bold)),
-                      Text("AVG:100,0"),
+                      Text("AVG:" + dartGameDataPlayer.averageString),
                     ],
                   ),
                 ),
