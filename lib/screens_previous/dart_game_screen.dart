@@ -1,6 +1,7 @@
 import 'package:dart_board_app/other_classes/dart_game.dart';
 import 'package:dart_board_app/widgets/player_score_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DartGame extends StatefulWidget {
   @override
@@ -323,6 +324,9 @@ class _DartGameState extends State<DartGame> {
         actions: [
           IconButton(icon: Icon(Icons.bar_chart), onPressed: () {}),
         ],
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Theme.of(context).primaryColor),
+        backwardsCompatibility: false,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: _buildGrid(context),
     );
